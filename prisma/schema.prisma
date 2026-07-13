@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  username     String
+  email        String   @unique
+  password     String
+  nombres      String
+  apellidos    String
+  cargo        String   @default("Mecánico")
+  profileImage String   @default("")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  tasksOwned    Task[] @relation("TaskUser")
+  tasksCreated  Task[] @relation("TaskCreatedBy")
+  tasksEdited   Task[] @relation("TaskEditedBy")
+  tasksAssigned Task[] @relation("TaskAssignedTo")
+}
+
+model Task {
+  id                String   @id @default(cuid())
+  orderNumber       Int      @unique
+  carPlate          String
+  clientNombres     String   @default("")
+  clientApellidos   String   @default("")
+  description       String   @default("")
+  motivoIngreso     String   @default("")
+  diagnosticoTaller String   @default("")
+  repairDescription String   @default("")
+  date              DateTime @default(now())
+  clientRUT         String   @default("")
+  clientPhone       String   @default("")
+  clientEmail       String   @default("")
+  carBrand          String   @default("")
+  carModel          String   @default("")
+  carColor          String   @default("")
+  carYear           String   @default("")
+  carKm             String   @default("")
+  carDamages        String   @default("")
+  carDetails        String   @default("")
+  servicePrice      Float    @default(0)
+  status            String   @default("en curso")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  userId       String
+  user         User   @relation("TaskUser",       fields: [userId],       references: [id])
+
+  createdById  String
+  createdBy    User   @relation("TaskCreatedBy",  fields: [createdById],  references: [id])
+
+  editedById   String?
+  editedBy     User?  @relation("TaskEditedBy",   fields: [editedById],   references: [id])
+
+  assignedToId String?
+  assignedTo   User?  @relation("TaskAssignedTo", fields: [assignedToId], references: [id])
+}
+
+model Log {
+  id          String   @id @default(cuid())
+  action      String
+  description String
+  userId      String?
+  username    String   @default("Sistema")
+  ip          String   @default("")
+  meta        String   @default("{}")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: tallerdata-backend
+    env: node
+    buildCommand: npm install && npx puppeteer browsers install chrome
+    startCommand: node src/index.js
+    envVars:
+      - key: PUPPETEER_SKIP_CHROMIUM_DOWNLOAD
+        value: false
+      - key: NODE_ENV
+        value: production

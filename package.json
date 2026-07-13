@@ -1,0 +1,70 @@
+{
+  "name": "MotiQ",
+  "description": "MotiQ — Software para Servicios Técnicos Automotrices",
+  "author": "Qodeya <contacto@qodeya.cl>",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "start":          "node src/index.js",
+    "dev":            "nodemon src/index.js",
+    "postinstall":    "prisma generate",
+    "electron:dev":   "electron .",
+    "build:frontend": "cd taller && npm run build",
+    "build:exe":      "electron-builder --win"
+  },
+  "engines": {
+    "node": "20.x"
+  },
+  "dependencies": {
+    "@prisma/client":            "^5.22.0",
+    "archiver":                  "^6.0.0",
+    "bcryptjs":                  "^2.4.3",
+    "cookie-parser":             "^1.4.7",
+    "cors":                      "^2.8.5",
+    "dotenv":                    "^17.4.2",
+    "express":                   "^4.21.1",
+    "jsonwebtoken":              "^9.0.2",
+    "morgan":                    "^1.10.0",
+    "multer":                    "^1.4.5-lts.1",
+    "nodemailer":                "^8.0.9",
+    "puppeteer":                 "^22.0.0",
+    "zod":                       "^3.23.8"
+  },
+  "devDependencies": {
+    "electron":          "^29.0.0",
+    "electron-builder":  "^24.0.0",
+    "electron-rebuild":  "^3.2.9",
+    "nodemon":           "^3.1.7",
+    "prisma":            "^5.22.0"
+  },
+  "build": {
+    "appId":       "cl.qodeya.motiq",
+    "productName": "MotiQ",
+    "copyright":   "© 2025 Qodeya. Todos los derechos reservados.",
+    "asar":        false,
+    "win": {
+      "target": "nsis",
+      "icon":   "electron/icon.ico"
+    },
+    "files": [
+      "electron/**/*",
+      "src/**/*",
+      "prisma/**/*",
+      "taller/dist/**/*",
+      ".cache/puppeteer/**/*",
+      "package.json",
+      "node_modules/.prisma/**/*",
+      "!src/uploads/**/*",
+      "!node_modules/.cache/**/*"
+    ],
+    "nsis": {
+      "oneClick":                           false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut":              true,
+      "createStartMenuShortcut":            true,
+      "installerName":                      "MotiQ Setup",
+      "shortcutName":                       "MotiQ"
+    }
+  }
+}
