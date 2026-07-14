@@ -93,7 +93,7 @@ export default function TaskPage() {
     });
     if (mensaje === undefined) return;
     try {
-      await axios.post("/email/send", { to: task.clientEmail, subject: `Presupuesto MotiQ — Orden #${task.orderNumber}`, message: mensaje || "", task }, { withCredentials: true });
+      await axios.post("/email/send", { to: task.clientEmail, subject: `Presupuesto MeQanoX — Orden #${task.orderNumber}`, message: mensaje || "", task }, { withCredentials: true });
       Swal.fire({ title:"¡Presupuesto enviado!", icon:"success", background:t.bgCard, color:t.text, timer:2000, showConfirmButton:false });
     } catch (err) {
       Swal.fire({ title:"Error al enviar", text: err.response?.data?.message || "Verifica configuración SMTP", icon:"error", background:t.bgCard, color:t.text });
@@ -143,7 +143,7 @@ export default function TaskPage() {
     const secReparacion = completada && task.repairDescription ? `\n\n*Reparación realizada:*\n${task.repairDescription}` : "";
     const secObs        = completada && task.description       ? `\n\n*Observaciones:*\n${task.description}` : "";
 
-    const texto = `Hola ${nombre}, le contactamos desde *MotiQ* 🔧\n\n`
+    const texto = `Hola ${nombre}, le contactamos desde *MeQanoX* 🔧\n\n`
       + `*${completada ? "Orden completada" : "Presupuesto"} — Orden #${task.orderNumber}*\n`
       + `Vehículo: ${vehiculo} (${task.carPlate})`
       + secMotivo

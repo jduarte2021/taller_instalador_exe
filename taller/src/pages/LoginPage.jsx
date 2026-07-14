@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import motiqLogo from "../assets/images/motiq-logo.png";
+import meqanoxLogo from "../assets/images/meqanox-logo.png";
 
 export default function LoginPage() {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -21,7 +21,7 @@ export default function LoginPage() {
     <div className="min-h-screen flex flex-col items-center justify-center" style={{ background: "#0D0D0D" }}>
 
       {/* Logo grande centrado */}
-      <img src={motiqLogo} alt="MotiQ"
+      <img src={meqanoxLogo} alt="MeQanoX"
         style={{ width: "600px", maxWidth: "90vw", height: "auto", objectFit: "contain", marginBottom: "8px" }} />
 
       {/* Subtítulo */}

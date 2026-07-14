@@ -37,7 +37,7 @@ function getTransporter() {
 function getSenderAddress() {
   const method = process.env.EMAIL_METHOD || "gmail";
   const user   = method === "smtp" ? process.env.SMTP_USER : process.env.GMAIL_USER;
-  return `"MotiQ" <${user}>`;
+  return `"MeQanoX" <${user}>`;
 }
 
 // ── Verificar que hay config de email activa ─────────────────────────────────
@@ -80,7 +80,7 @@ function buildOrderHTML(task, extraMsg) {
     <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;margin-bottom:20px;border-bottom:2.5px solid #38bdf8;">
       <div style="display:flex;align-items:center;gap:14px;">
         <div style="width:48px;height:48px;background:#0f172a;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#38bdf8;">T</div>
-        <div><div style="font-size:22px;font-weight:900;color:#0f172a;">MotiQ</div><div style="font-size:11px;color:#64748b;margin-top:2px;">Software para Servicios Técnicos Automotrices</div></div>
+        <div><div style="font-size:22px;font-weight:900;color:#0f172a;">MeQanoX</div><div style="font-size:11px;color:#64748b;margin-top:2px;">Software para Servicios Técnicos Automotrices</div></div>
       </div>
       <div style="text-align:right;font-size:11px;color:#64748b;">Presupuesto<strong style="color:#0f172a;display:block;font-size:12px;">${new Date().toLocaleDateString("es-CL")}</strong></div>
     </div>
@@ -108,7 +108,7 @@ function buildOrderHTML(task, extraMsg) {
     ${note("Observaciones Generales", task.description, "#fb923c")}
     ${extraMsg ? `<div style="margin-top:16px;padding:12px 16px;background:#fffbeb;border-radius:8px;border-left:3px solid #f59e0b;font-size:13px;color:#1e293b;">${extraMsg}</div>` : ""}
     <div style="margin-top:28px;padding-top:12px;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;font-size:10px;color:#94a3b8;">
-      <span>MotiQ — Software para Servicios Técnicos Automotrices</span>
+      <span>MeQanoX — Software para Servicios Técnicos Automotrices</span>
       <span>Orden #${task.orderNumber} · ${new Date().toLocaleDateString("es-CL")}</span>
     </div>
   </div>
@@ -124,14 +124,14 @@ router.post("/email/send", authRequired, async (req, res) => {
 
   const htmlBody = task
     ? buildOrderHTML(task, message)
-    : `<div style="font-family:sans-serif;max-width:600px;margin:auto;padding:24px;border:1px solid #e2e8f0;border-radius:12px;"><p style="color:#0f172a;line-height:1.6;">${(message || "").replace(/\n/g, "<br>")}</p><p style="font-size:11px;color:#94a3b8;">MotiQ — Software para Servicios Técnicos Automotrices</p></div>`;
+    : `<div style="font-family:sans-serif;max-width:600px;margin:auto;padding:24px;border:1px solid #e2e8f0;border-radius:12px;"><p style="color:#0f172a;line-height:1.6;">${(message || "").replace(/\n/g, "<br>")}</p><p style="font-size:11px;color:#94a3b8;">MeQanoX — Software para Servicios Técnicos Automotrices</p></div>`;
 
   try {
     const transporter = getTransporter();
     const info = await transporter.sendMail({
       from:    getSenderAddress(),
       to:      Array.isArray(to) ? to.join(", ") : to,
-      subject: subject || "Contacto desde MotiQ",
+      subject: subject || "Contacto desde MeQanoX",
       text:    message || `Presupuesto Orden #${task?.orderNumber}`,
       html:    htmlBody,
     });
@@ -165,20 +165,20 @@ router.post("/email/test", authRequired, async (req, res) => {
     await transporter.sendMail({
       from:    getSenderAddress(),
       to,
-      subject: "✅ MotiQ — Prueba de correo exitosa",
+      subject: "✅ MeQanoX — Prueba de correo exitosa",
       html: `
         <div style="font-family:'Segoe UI',Arial,sans-serif;max-width:480px;margin:auto;padding:32px;background:#fff;border:1px solid #e2e8f0;border-radius:12px;">
           <div style="font-size:48px;text-align:center;margin-bottom:16px;">✅</div>
           <h2 style="color:#0f172a;text-align:center;margin:0 0 8px;">¡Correo configurado correctamente!</h2>
           <p style="color:#475569;text-align:center;font-size:14px;margin:0 0 24px;">
-            Este es un correo de prueba enviado desde <strong>MotiQ</strong>.
+            Este es un correo de prueba enviado desde <strong>MeQanoX</strong>.
           </p>
           <div style="background:#f8fafc;border-radius:8px;padding:16px;font-size:12px;color:#64748b;">
             <strong>Método:</strong> ${method === "smtp" ? "SMTP Genérico" : "Gmail"}<br>
             <strong>Servidor:</strong> ${method === "smtp" ? (process.env.SMTP_HOST + ":" + process.env.SMTP_PORT) : "smtp.gmail.com"}<br>
             <strong>Fecha:</strong> ${new Date().toLocaleString("es-CL")}
           </div>
-          <p style="font-size:11px;color:#94a3b8;text-align:center;margin-top:20px;">MotiQ — Software para Servicios Técnicos Automotrices</p>
+          <p style="font-size:11px;color:#94a3b8;text-align:center;margin-top:20px;">MeQanoX — Software para Servicios Técnicos Automotrices</p>
         </div>`,
     });
 

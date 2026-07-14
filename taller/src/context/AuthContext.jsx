@@ -22,7 +22,7 @@ const WARNING_BEFORE = 2 * 60 * 1000; // Aviso 2 min antes
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(() => {
         try {
-            const saved = localStorage.getItem("motiq_user");
+            const saved = localStorage.getItem("meqanox_user");
             return saved ? JSON.parse(saved) : null;
         } catch { return null; }
     });
@@ -40,8 +40,8 @@ export const AuthProvider = ({ children }) => {
 
     // ── Persistir usuario ─────────────────────────────────────────────────────
     useEffect(() => {
-        if (user) localStorage.setItem("motiq_user", JSON.stringify(user));
-        else localStorage.removeItem("motiq_user");
+        if (user) localStorage.setItem("meqanox_user", JSON.stringify(user));
+        else localStorage.removeItem("meqanox_user");
     }, [user]);
 
     // ── Limpiar errores ───────────────────────────────────────────────────────
@@ -72,7 +72,7 @@ export const AuthProvider = ({ children }) => {
         try { await axios.post('/logout'); } catch {}
         setUser(null);
         setIsAuthenticated(false);
-        localStorage.removeItem("motiq_user");
+        localStorage.removeItem("meqanox_user");
         localStorage.removeItem("token");
         if (reason === "timeout") {
             await Swal.fire({
@@ -158,7 +158,7 @@ export const AuthProvider = ({ children }) => {
             } catch {
                 setIsAuthenticated(false);
                 setUser(null);
-                localStorage.removeItem("motiq_user");
+                localStorage.removeItem("meqanox_user");
                 localStorage.removeItem("token");
             } finally {
                 setLoading(false);

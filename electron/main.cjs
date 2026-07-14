@@ -50,7 +50,7 @@ function loadUserConfig() {
 // ── Iniciar Express + Prisma en el mismo proceso ──────────────────────────────
 async function startExpress() {
   const uploadsBase = path.join(app.getPath('userData'), 'uploads');
-  const dbPath      = path.join(app.getPath('userData'), 'motiq.db');
+  const dbPath      = path.join(app.getPath('userData'), 'meqanox.db');
   fs.mkdirSync(path.join(uploadsBase, 'perfiles'), { recursive: true });
 
   const chromePath = findChromePath();
@@ -117,7 +117,7 @@ function createWindow() {
     height:    900,
     minWidth:  1024,
     minHeight: 600,
-    title:     'MotiQ',
+    title:     'MeQanoX',
     icon: path.join(appRoot, 'electron', 'icon.ico'),
     webPreferences: {
       nodeIntegration:  false,
@@ -129,7 +129,7 @@ function createWindow() {
 
   mainWindow.loadFile(path.join(appRoot, 'taller', 'dist', 'index.html'));
   mainWindow.once('ready-to-show', () => {
-    mainWindow.setTitle('MotiQ');
+    mainWindow.setTitle('MeQanoX');
     mainWindow.show();
   });
   mainWindow.on('closed', () => { mainWindow = null; });
@@ -186,8 +186,8 @@ ipcMain.handle('select-folder', async () => {
 });
 
 // ── Arranque ──────────────────────────────────────────────────────────────────
-app.setName('MotiQ');
-if (process.platform === 'win32') app.setAppUserModelId('cl.qodeya.motiq');
+app.setName('MeQanoX');
+if (process.platform === 'win32') app.setAppUserModelId('cl.qodeya.meqanox');
 
 app.whenReady().then(async () => {
   try {

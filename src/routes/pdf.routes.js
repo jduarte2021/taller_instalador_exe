@@ -88,7 +88,7 @@ function buildHTML(task) {
     <div class="brand">
       <div class="brand-icon">T</div>
       <div>
-        <div class="brand-name">MotiQ</div>
+        <div class="brand-name">MeQanoX</div>
         <div class="brand-sub">Software para Servicios Técnicos Automotrices</div>
       </div>
     </div>
@@ -144,7 +144,7 @@ function buildHTML(task) {
   ${note("Descripción de Reparación / Cambio de Piezas", task.repairDescription, "#4ade80")}
   ${note("Observaciones Generales", task.description, "#fb923c")}
   <div class="footer">
-    <span>MotiQ — Software para Servicios Técnicos Automotrices</span>
+    <span>MeQanoX — Software para Servicios Técnicos Automotrices</span>
     <span>Orden #${task.orderNumber} · ${new Date().toLocaleDateString("es-CL")}</span>
   </div>
 </body>

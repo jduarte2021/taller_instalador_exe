@@ -1,6 +1,6 @@
 {
-  "name": "MotiQ",
-  "description": "MotiQ — Software para Servicios Técnicos Automotrices",
+  "name": "MeQanoX",
+  "description": "MeQanoX — Software para Servicios Técnicos Automotrices",
   "author": "Qodeya <contacto@qodeya.cl>",
   "version": "1.0.0",
   "type": "module",
@@ -39,8 +39,8 @@
     "prisma":            "^5.22.0"
   },
   "build": {
-    "appId":       "cl.qodeya.motiq",
-    "productName": "MotiQ",
+    "appId":       "cl.qodeya.meqanox",
+    "productName": "MeQanoX",
     "copyright":   "© 2025 Qodeya. Todos los derechos reservados.",
     "asar":        false,
     "win": {
@@ -63,8 +63,8 @@
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut":              true,
       "createStartMenuShortcut":            true,
-      "installerName":                      "MotiQ Setup",
-      "shortcutName":                       "MotiQ"
+      "installerName":                      "MeQanoX Setup",
+      "shortcutName":                       "MeQanoX"
     }
   }
 }

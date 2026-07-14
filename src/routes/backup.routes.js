@@ -12,7 +12,7 @@ const upload  = multer({ storage: multer.memoryStorage(), limits: { fileSize: 20
 
 // ── Obtener ruta real del .db desde DATABASE_URL ──────────────────────────────
 function getDbPath() {
-  const url = process.env.DATABASE_URL || '';          // "file:/ruta/motiq.db"
+  const url = process.env.DATABASE_URL || '';          // "file:/ruta/meqanox.db"
   return url.replace(/^file:/, '');
 }
 
@@ -26,13 +26,13 @@ router.get('/backup', authRequired, superadminRequired, async (req, res) => {
     const date = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
 
     res.setHeader('Content-Type', 'application/zip');
-    res.setHeader('Content-Disposition', `attachment; filename=backup_motiq_${date}.zip`);
+    res.setHeader('Content-Disposition', `attachment; filename=backup_meqanox_${date}.zip`);
 
     const archive = archiver('zip', { zlib: { level: 9 } });
     archive.pipe(res);
 
     // 1. Base de datos SQLite completa (para restauración)
-    archive.file(dbPath, { name: 'motiq.db' });
+    archive.file(dbPath, { name: 'meqanox.db' });
 
     // 2. JSON de órdenes (legible)
     const tasks = await prisma.task.findMany({

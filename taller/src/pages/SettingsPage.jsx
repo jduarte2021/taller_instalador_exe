@@ -116,7 +116,7 @@ export default function SettingsPage() {
       const res   = await fetch(`${BASE_URL}/api/backup`, { headers: { Authorization: `Bearer ${token}` } });
       if (!res.ok) throw new Error(`Error ${res.status}`);
       const blob     = await res.blob();
-      const filename = `backup_motiq_${new Date().toISOString().split("T")[0]}.zip`;
+      const filename = `backup_meqanox_${new Date().toISOString().split("T")[0]}.zip`;
       if (isElectron && backupFolder) {
         const buffer = await blob.arrayBuffer();
         const result = await window.electronAPI.saveFile(Array.from(new Uint8Array(buffer)), backupFolder, filename);

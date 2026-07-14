@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 import { getAvatarUrl } from "../schemas/api/config";
-import motiqLogo from "../assets/images/motiq-logo-sidebar.png";
+import meqanoxLogo from "../assets/images/meqanox-logo-sidebar.png";
 import Swal from "sweetalert2";
 
 const Sidebar = () => {
@@ -59,8 +59,8 @@ const Sidebar = () => {
         style={{ borderBottom: `1px solid ${t.sidebarBorder}` }}>
         {!isCollapsed && (
           <img
-            src={motiqLogo}
-            alt="MotiQ"
+            src={meqanoxLogo}
+            alt="MeQanoX"
             style={{ width: "180px", height: "80px", objectFit: "contain" }}
           />
         )}

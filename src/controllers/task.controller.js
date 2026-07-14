@@ -1,5 +1,4 @@
 import prisma from '../db.js';
-import archiver from 'archiver';
 import { createLog } from './log.controller.js';
 
 // Campos include reutilizables para populate equivalente
@@ -196,29 +195,3 @@ export const searchTasksByOrderNumber = async (req, res) => {
   }
 };
 
-export const backupTasks = async (req, res) => {
-  try {
-    const tasks = await prisma.task.findMany({ include: taskInclude });
-    const date = new Date().toISOString().split('T')[0];
-
-    res.setHeader('Content-Type', 'application/zip');
-    res.setHeader('Content-Disposition', `attachment; filename=respaldo_ordenes_${date}.zip`);
-
-    const archive = archiver('zip', { zlib: { level: 9 } });
-    archive.pipe(res);
-
-    archive.append(JSON.stringify(tasks, null, 2), { name: `ordenes_${date}.json` });
-
-    const csvHeader = 'N° Orden,Cliente,RUT,Teléfono,Email,Patente,Marca,Modelo,Color,Año,KM,Estado,Precio,Mecánico,Fecha\n';
-    const csvRows  = tasks.map(t =>
-      `${t.orderNumber},"${t.clientNombres} ${t.clientApellidos}","${t.clientRUT}","${t.clientPhone}","${t.clientEmail}","${t.carPlate}","${t.carBrand}","${t.carModel}","${t.carColor}","${t.carYear}","${t.carKm}","${t.status}",${t.servicePrice},"${t.assignedTo ? t.assignedTo.nombres + ' ' + t.assignedTo.apellidos : 'N/A'}","${new Date(t.date).toLocaleDateString('es-CL')}"`
-    ).join('\n');
-    archive.append(csvHeader + csvRows, { name: `ordenes_${date}.csv` });
-
-    const u = await prisma.user.findUnique({ where: { id: req.user.id } });
-    await createLog('BACKUP', 'Respaldo de órdenes generado', req.user.id, u?.username, req.ip);
-    await archive.finalize();
-  } catch (error) {
-    res.status(500).json({ message: 'Error generando respaldo' });
-  }
-};
