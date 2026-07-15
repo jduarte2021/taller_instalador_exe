@@ -42,7 +42,7 @@ export default function StatsPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const isAdmin = user?.cargo?.toLowerCase() === "superadmin" || user?.cargo === "Administrador" || user?.email?.includes("jimmy.duarte");
+  const isAdmin = user?.cargo?.toLowerCase() === "superadmin" || user?.cargo === "Administrador";
   useEffect(() => { if (!isAdmin) navigate("/dashboard"); }, [isAdmin]);
   useEffect(() => { getTasks(); }, []);
 

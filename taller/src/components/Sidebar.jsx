@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 import { getAvatarUrl } from "../schemas/api/config";
 import meqanoxLogo from "../assets/images/meqanox-logo-sidebar.png";
+import meqanoxLogoLight from "../assets/images/meqanox-logo-sidebar-light.png";
 import Swal from "sweetalert2";
 
 const Sidebar = () => {
@@ -13,7 +14,7 @@ const Sidebar = () => {
   const navigate  = useNavigate();
   const location  = useLocation();
 
-  const isSuperAdmin = user?.cargo?.toLowerCase() === "superadmin" || user?.email?.includes("jimmy.duarte");
+  const isSuperAdmin = user?.cargo?.toLowerCase() === "superadmin";
   const isAdmin      = isSuperAdmin || user?.cargo === "Administrador";
 
   const NAV_ITEMS = [
@@ -59,7 +60,7 @@ const Sidebar = () => {
         style={{ borderBottom: `1px solid ${t.sidebarBorder}` }}>
         {!isCollapsed && (
           <img
-            src={meqanoxLogo}
+            src={themeName === "light" ? meqanoxLogoLight : meqanoxLogo}
             alt="MeQanoX"
             style={{ width: "180px", height: "80px", objectFit: "contain" }}
           />

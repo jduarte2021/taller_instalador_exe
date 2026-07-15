@@ -18,8 +18,8 @@ export default function UsersAdminPage() {
   const [form, setForm] = useState({ username: "", email: "", password: "", nombres: "", apellidos: "", cargo: "Mecánico" });
   const [saving, setSaving] = useState(false);
 
-  const isAdmin = user?.cargo === "Administrador" || user?.email?.includes("jimmy.duarte") || user?.cargo?.toLowerCase() === "superadmin";
-  const isSuperAdmin = user?.username === "jduarte" || user?.email?.includes("jimmy.duarte") || user?.cargo?.toLowerCase() === "superadmin";
+  const isAdmin = user?.cargo === "Administrador" || user?.cargo?.toLowerCase() === "superadmin";
+  const isSuperAdmin = user?.username === "jduarte" || user?.cargo?.toLowerCase() === "superadmin";
 
   useEffect(() => { if (!isAdmin) navigate("/dashboard"); }, [isAdmin]);
 
@@ -195,7 +195,7 @@ export default function UsersAdminPage() {
                   </div>
                   {/* Columna 🔑 — ancho fijo */}
                   <div style={{ width: "36px", display: "flex", justifyContent: "center" }}>
-                    {isSuperAdmin && !u.email?.includes("jimmy.duarte") ? (
+                    {isSuperAdmin ? (
                       <button onClick={() => handleChangePassword(u)}
                         title="Cambiar contraseña"
                         className="text-xs p-2 rounded-lg transition w-full"
@@ -206,7 +206,7 @@ export default function UsersAdminPage() {
                   </div>
                   {/* Columna 🗑 — ancho fijo */}
                   <div style={{ width: "36px", display: "flex", justifyContent: "center" }}>
-                    {isSuperAdmin && !u.email?.includes("jimmy.duarte") && u.cargo?.toLowerCase() !== "superadmin" ? (
+                    {isSuperAdmin && u.cargo?.toLowerCase() !== "superadmin" ? (
                       <button onClick={() => handleDelete(u)}
                         title="Eliminar usuario"
                         className="text-sm p-2 rounded-lg transition w-full"

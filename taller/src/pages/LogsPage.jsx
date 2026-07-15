@@ -26,7 +26,7 @@ export default function LogsPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [filterAction, setFilterAction] = useState("all");
 
-  const isSuperAdmin = user?.cargo?.toLowerCase() === "superadmin" || user?.email?.includes("jimmy.duarte");
+  const isSuperAdmin = user?.cargo?.toLowerCase() === "superadmin";
   useEffect(() => { if (!isSuperAdmin) navigate("/dashboard"); }, [isSuperAdmin]);
 
   const fetchLogs = async (p = 1) => {

@@ -128,7 +128,7 @@ export default function DashboardPage() {
   const [showNotif, setShowNotif] = useState(false);
   const TASKS_PER_PAGE = 6;
 
-  const isAdmin = user?.cargo?.toLowerCase() === "superadmin" || user?.cargo === "Administrador" || user?.email?.includes("jimmy.duarte");
+  const isAdmin = user?.cargo?.toLowerCase() === "superadmin" || user?.cargo === "Administrador";
 
   useEffect(() => { getTasks(); }, []);
 

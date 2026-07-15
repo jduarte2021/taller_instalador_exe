@@ -9,7 +9,7 @@ export default function ClientsPage() {
   const { theme: t } = useTheme();
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState(null);
-  const [emailSubject, setEmailSubject] = useState("Contacto desde MotiQ");
+  const [emailSubject, setEmailSubject] = useState("Contacto desde MeQanoX");
   const [emailMsg, setEmailMsg] = useState("");
   const [sending, setSending] = useState(false);
 

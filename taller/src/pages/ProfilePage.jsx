@@ -13,7 +13,7 @@ export default function ProfilePage() {
   const [profileImage, setProfileImage] = useState(null);
   const [saving, setSaving] = useState(false);
 
-  const isSuperAdmin = user?.cargo?.toLowerCase() === "superadmin" || user?.email?.includes("jimmy.duarte");
+  const isSuperAdmin = user?.cargo?.toLowerCase() === "superadmin";
 
   const [formData, setFormData] = useState({
     nombre: user?.nombres || "",

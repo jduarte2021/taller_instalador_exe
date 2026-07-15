@@ -23,7 +23,7 @@ export default function TaskSearchPage() {
   const { user } = useAuth();
   const { theme: t } = useTheme();
   const navigate = useNavigate();
-  const isAdmin = user?.cargo?.toLowerCase() === "superadmin" || user?.cargo === "Administrador" || user?.email?.includes("jimmy.duarte");
+  const isAdmin = user?.cargo?.toLowerCase() === "superadmin" || user?.cargo === "Administrador";
 
   useEffect(() => {
     const saved = JSON.parse(sessionStorage.getItem("taskSearchParams") || "null");
@@ -102,12 +102,12 @@ Motivo: ${task.motivoIngreso || task.repairDescription || "Servicio de taller"}
 ${mensaje ? `\nObservaciones: ${mensaje}` : ""}
 
 Quedamos a su disposición.
-MotiQ — Software para Servicios Técnicos Automotrices`;
+MeQanoX — Software para Servicios Técnicos Automotrices`;
 
     try {
       await axios.post("/email/send", {
         to: task.clientEmail,
-        subject: `Presupuesto MotiQ — Orden #${task.orderNumber}`,
+        subject: `Presupuesto MeQanoX — Orden #${task.orderNumber}`,
         message: msg,
       }, { withCredentials: true });
       Swal.fire({ title:"¡Presupuesto enviado!", icon:"success", background:t.bgCard, color:t.text, timer:2000, showConfirmButton:false });

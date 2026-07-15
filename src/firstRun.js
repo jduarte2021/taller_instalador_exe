@@ -82,7 +82,7 @@ export const firstRun = async () => {
     await prisma.user.create({
       data: {
         username:     'jduarte',
-        email:        'jduarte@motiq.cl',
+        email:        'jduarte@meqanox.cl',
         password:     hash,
         nombres:      'Jimmy',
         apellidos:    'Duarte',
@@ -92,7 +92,7 @@ export const firstRun = async () => {
     });
 
     console.log('✅ Primera ejecución: usuario administrador creado.');
-    console.log('   Email:      jduarte@motiq.cl');
+    console.log('   Email:      jduarte@meqanox.cl');
     console.log('   Contraseña: Admin123456');
   } catch (error) {
     console.error('❌ Error en firstRun:', error.message);
