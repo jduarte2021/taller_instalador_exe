@@ -36,7 +36,16 @@ export const AuthProvider = ({ children }) => {
     const isAuthenticatedRef = useRef(false);
 
     // Mantener ref sincronizado con estado
-    useEffect(() => { isAuthenticatedRef.current = isAuthenticated; }, [isAuthenticated]);
+    useEffect(() => {
+        isAuthenticatedRef.current = isAuthenticated;
+        // Si se desloguea, cancelar cualquier timer pendiente inmediatamente
+        if (!isAuthenticated) {
+            clearTimeout(timeoutRef.current);
+            clearTimeout(warningRef.current);
+            warnShownRef.current = false;
+            Swal.close(); // Cerrar cualquier Swal abierto (ej: aviso de expiración)
+        }
+    }, [isAuthenticated]);
 
     // ── Persistir usuario ─────────────────────────────────────────────────────
     useEffect(() => {
@@ -96,6 +105,7 @@ export const AuthProvider = ({ children }) => {
         // Advertencia 2 min antes del cierre
         warningRef.current = setTimeout(async () => {
             if (warnShownRef.current) return;
+            if (!isAuthenticatedRef.current) return;  // ← no mostrar si ya no está logueado
             warnShownRef.current = true;
             const result = await Swal.fire({
                 title: "⚠️ Sesión por expirar",
@@ -117,6 +127,7 @@ export const AuthProvider = ({ children }) => {
 
         // Cierre automático
         timeoutRef.current = setTimeout(() => {
+            if (!isAuthenticatedRef.current) return;  // ← no cerrar si ya no está logueado
             doLogout("timeout");
         }, getSessionTimeout());
     };

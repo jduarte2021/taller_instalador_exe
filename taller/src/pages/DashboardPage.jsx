@@ -52,7 +52,8 @@ function BarChart({ data }) {
 }
 
 function DonutChart({ slices }) {
-  const total = slices.reduce((s, c) => s + c.value, 0) || 1;
+  const total    = slices.reduce((s, c) => s + c.value, 0);
+  const divisor  = total || 1;  // solo para evitar división por cero, no se muestra
   const [animated, setAnimated] = useState(false);
   useEffect(() => { const tm = setTimeout(() => setAnimated(true), 250); return () => clearTimeout(tm); }, []);
   const r = 64, cx = 84, cy = 84, circ = 2 * Math.PI * r;
@@ -61,7 +62,7 @@ function DonutChart({ slices }) {
     <svg viewBox="0 0 168 168" className="w-56 h-56">
       <circle cx={cx} cy={cy} r={r} fill="none" stroke="#1e293b" strokeWidth="18" />
       {slices.map((s, i) => {
-        const dash = animated ? (s.value / total) * circ : 0;
+        const dash = animated ? (s.value / divisor) * circ : 0;
         const el = (
           <circle key={i} cx={cx} cy={cy} r={r} fill="none" stroke={s.color} strokeWidth="18"
             strokeDasharray={`${dash} ${circ - dash}`}
@@ -71,7 +72,7 @@ function DonutChart({ slices }) {
             style={{ transition: `stroke-dasharray 1.1s cubic-bezier(.4,0,.2,1) ${i * 0.25}s` }}
           />
         );
-        offset += (s.value / total) * circ;
+        offset += (s.value / divisor) * circ;
         return el;
       })}
       <text x={cx} y={cy + 10} textAnchor="middle" fontSize="28" fontWeight="900" fill="#f1f5f9">{total}</text>
