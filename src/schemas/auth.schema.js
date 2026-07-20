@@ -20,11 +20,10 @@ export const registerSchema = z.object({
 });
 
 export const loginSchema = z.object({
-    email: z.string({
-        required_error: 'Correo electrónico es requerido',
-    }).email({
-        pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/i,
-        message: 'Correo electrónico no válido'
+    username: z.string({
+        required_error: 'Nombre de usuario es requerido',
+    }).min(1, {
+        message: 'Nombre de usuario es requerido',
     }),
     password: z.string({
         required_error: 'Contraseña es requerida',
