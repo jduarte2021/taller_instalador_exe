@@ -19,7 +19,7 @@ export default function UsersAdminPage() {
   const [saving, setSaving] = useState(false);
 
   const isAdmin = user?.cargo === "Administrador" || user?.cargo?.toLowerCase() === "superadmin";
-  const isSuperAdmin = user?.username === "jduarte" || user?.cargo?.toLowerCase() === "superadmin";
+  const isSuperAdmin = user?.cargo?.toLowerCase() === "superadmin";
 
   useEffect(() => { if (!isAdmin) navigate("/dashboard"); }, [isAdmin]);
 
