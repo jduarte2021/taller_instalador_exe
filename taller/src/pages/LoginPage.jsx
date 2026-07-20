@@ -41,13 +41,13 @@ export default function LoginPage() {
 
         <div style={{ width: "100%" }}>
           <label style={{ display: "block", fontSize: "10px", fontWeight: 700, letterSpacing: "2px", color: "#888", textTransform: "uppercase", textAlign: "center", marginBottom: "8px" }}>
-            EMAIL
+            USUARIO
           </label>
-          <input type="email" {...register("email", { required: true })}
-            autoComplete="email"
+          <input type="text" {...register("username", { required: true })}
+            autoComplete="username"
             style={{ width: "100%", padding: "14px 20px", borderRadius: "12px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", color: "#fff", fontSize: "14px", outline: "none", textAlign: "center", boxSizing: "border-box" }}
           />
-          {errors.email && <p style={{ color: "#f87171", fontSize: "11px", textAlign: "center", marginTop: "4px" }}>Email es requerido</p>}
+          {errors.username && <p style={{ color: "#f87171", fontSize: "11px", textAlign: "center", marginTop: "4px" }}>Usuario es requerido</p>}
         </div>
 
         <div style={{ width: "100%" }}>

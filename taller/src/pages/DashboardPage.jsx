@@ -51,7 +51,7 @@ function BarChart({ data }) {
   );
 }
 
-function DonutChart({ slices }) {
+function DonutChart({ slices, textColor = "#f1f5f9", mutedColor = "#94a3b8" }) {
   const total    = slices.reduce((s, c) => s + c.value, 0);
   const divisor  = total || 1;  // solo para evitar división por cero, no se muestra
   const [animated, setAnimated] = useState(false);
@@ -75,8 +75,8 @@ function DonutChart({ slices }) {
         offset += (s.value / divisor) * circ;
         return el;
       })}
-      <text x={cx} y={cy + 10} textAnchor="middle" fontSize="28" fontWeight="900" fill="#f1f5f9">{total}</text>
-      <text x={cx} y={cy + 28} textAnchor="middle" fontSize="13" fontWeight="600" fill="#94a3b8">órdenes</text>
+      <text x={cx} y={cy + 10} textAnchor="middle" fontSize="28" fontWeight="900" fill={textColor}>{total}</text>
+      <text x={cx} y={cy + 28} textAnchor="middle" fontSize="13" fontWeight="600" fill={mutedColor}>órdenes</text>
     </svg>
   );
 }
@@ -305,7 +305,7 @@ export default function DashboardPage() {
           </div>
           <div className="rounded-2xl p-5 flex flex-col items-center justify-center gap-4" style={{ background: t.bgCard, border: `1px solid ${t.border}` }}>
             <h3 className="font-bold text-sm uppercase tracking-widest w-full" style={{ color: t.text }}>Por estado</h3>
-            <DonutChart slices={[{ value: kpis.completadas, color: "#4ade80" }, { value: kpis.enCurso, color: "#fb923c" }]} />
+            <DonutChart slices={[{ value: kpis.completadas, color: "#4ade80" }, { value: kpis.enCurso, color: "#fb923c" }]} textColor={t.text} mutedColor={t.textMuted} />
             <div className="flex flex-col gap-2 text-sm w-full">
               {[["#4ade80","Completadas",kpis.completadas],["#fb923c","En curso",kpis.enCurso]].map(([c,l,v]) => (
                 <div key={l} className="flex items-center justify-between">
