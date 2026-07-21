@@ -56,7 +56,16 @@ async function startExpress() {
   const chromePath = findChromePath();
 
   process.env.PORT         = '3000';
-  process.env.TOKEN_SECRET = 'ThinkPad@551v';
+  // TOKEN_SECRET dinámico — basado en hardware del equipo
+  // Así aunque alguien extraiga el .exe, no puede calcular el secret
+  // porque depende del hostname y CPU de la máquina específica
+  const { createHash } = require('crypto');
+  const machineFingerprint = require('os').hostname() +
+    (require('os').cpus()[0]?.model || 'cpu') +
+    'meqanox-jwt-secret-v1';
+  process.env.TOKEN_SECRET = createHash('sha512')
+    .update(machineFingerprint)
+    .digest('hex');
   process.env.NODE_ENV     = 'production';
   process.env.ELECTRON_APP = 'true';
   process.env.UPLOADS_BASE = uploadsBase;

@@ -1,5 +1,6 @@
 import prisma from '../db.js';
 import { createLog } from './log.controller.js';
+import { encryptTaskFields, decryptTask, encrypt } from '../lib/crypto.js';
 
 // Campos include reutilizables para populate equivalente
 const taskInclude = {
@@ -32,7 +33,7 @@ function sanitizeTaskBody(body) {
 export const getTasks = async (req, res) => {
   try {
     const tasks = await prisma.task.findMany({ include: taskInclude });
-    res.json(tasks);
+    res.json(tasks.map(decryptTask));
   } catch (error) {
     res.status(500).json({ message: 'Error interno del servidor' });
   }
@@ -43,7 +44,7 @@ export const createTask = async (req, res) => {
     const lastTask = await prisma.task.findFirst({ orderBy: { orderNumber: 'desc' } });
     const newOrderNumber = lastTask?.orderNumber ? lastTask.orderNumber + 1 : 1001;
 
-    const body = sanitizeTaskBody(req.body);
+    const body = encryptTaskFields(sanitizeTaskBody(req.body));
 
     const newTask = await prisma.task.create({
       data: {
@@ -90,7 +91,7 @@ export const deleteTask = async (req, res) => {
 
 export const updateTask = async (req, res) => {
   try {
-    const body = sanitizeTaskBody(req.body);
+    const body = encryptTaskFields(sanitizeTaskBody(req.body));
     body.editedById = req.user.id;
 
     const task = await prisma.task.update({
@@ -100,8 +101,8 @@ export const updateTask = async (req, res) => {
     });
 
     const u = await prisma.user.findUnique({ where: { id: req.user.id } });
-    await createLog('UPDATE_TASK', `Orden #${task.orderNumber} editada (cliente: ${task.clientNombres} ${task.clientApellidos})`, req.user.id, u?.username, req.ip, { orderNumber: task.orderNumber });
-    res.json(task);
+    await createLog('UPDATE_TASK', `Orden #${task.orderNumber} editada`, req.user.id, u?.username, req.ip, { orderNumber: task.orderNumber });
+    res.json(decryptTask(task));
   } catch (error) {
     res.status(500).json({ message: 'Error interno del servidor: ' + error.message });
   }
@@ -117,7 +118,7 @@ export const markTaskAsCompleted = async (req, res) => {
 
     const u = await prisma.user.findUnique({ where: { id: req.user.id } });
     await createLog('COMPLETE_TASK', `Orden #${task.orderNumber} marcada como completada`, req.user.id, u?.username, req.ip);
-    res.json(task);
+    res.json(decryptTask(task));
   } catch (error) {
     res.status(500).json({ message: 'Error interno del servidor' });
   }
@@ -133,7 +134,7 @@ export const searchTasksByCarPlate = async (req, res) => {
       include: taskInclude,
     });
     if (tasks.length === 0) return res.status(404).json({ message: 'No se encontraron tareas con esa patente' });
-    res.json(tasks);
+    res.json(tasks.map(decryptTask));
   } catch (error) {
     res.status(500).json({ message: 'Error interno del servidor' });
   }
@@ -154,7 +155,7 @@ export const searchTasksByClientName = async (req, res) => {
       include: taskInclude,
     });
     if (tasks.length === 0) return res.status(404).json({ message: 'No se encontraron tareas para el cliente especificado.' });
-    res.json(tasks);
+    res.json(tasks.map(decryptTask));
   } catch (error) {
     res.status(500).json({ message: 'Error interno del servidor' });
   }
@@ -170,7 +171,7 @@ export const searchTasksByPhone = async (req, res) => {
       include: taskInclude,
     });
     if (tasks.length === 0) return res.status(404).json({ message: 'No se encontraron tareas para ese teléfono.' });
-    res.json(tasks);
+    res.json(tasks.map(decryptTask));
   } catch (error) {
     res.status(500).json({ message: 'Error interno del servidor' });
   }
@@ -189,7 +190,7 @@ export const searchTasksByOrderNumber = async (req, res) => {
       include: taskInclude,
     });
     if (tasks.length === 0) return res.status(404).json({ message: 'No se encontró ninguna orden con ese número.' });
-    res.json(tasks);
+    res.json(tasks.map(decryptTask));
   } catch (error) {
     res.status(500).json({ message: 'Error interno del servidor' });
   }

@@ -6,6 +6,7 @@ import path         from 'path';
 import { authRequired, superadminRequired } from '../middlewares/validateTokens.js';
 import prisma       from '../db.js';
 import { createLog } from '../controllers/log.controller.js';
+import { decryptTask, decrypt } from '../lib/crypto.js';
 
 const router  = Router();
 const upload  = multer({ storage: multer.memoryStorage(), limits: { fileSize: 200 * 1024 * 1024 } });
@@ -35,7 +36,7 @@ router.get('/backup', authRequired, superadminRequired, async (req, res) => {
     archive.file(dbPath, { name: 'meqanox.db' });
 
     // 2. JSON de órdenes (legible)
-    const tasks = await prisma.task.findMany({
+    const rawTasks = await prisma.task.findMany({
       include: {
         assignedTo: { select: { nombres: true, apellidos: true, username: true } },
         createdBy:  { select: { username: true } },
@@ -43,6 +44,8 @@ router.get('/backup', authRequired, superadminRequired, async (req, res) => {
       },
       orderBy: { orderNumber: 'asc' },
     });
+    // Descifrar campos sensibles antes de exportar (legible para contabilidad)
+    const tasks = rawTasks.map(decryptTask);
     archive.append(JSON.stringify(tasks, null, 2), { name: 'ordenes.json' });
 
     // 3. JSON de usuarios (sin contraseñas)

@@ -1,5 +1,3 @@
-//export const TOKEN_SECRET = process.env.TOKEN_SECRET;
-export const TOKEN_SECRET = 'ThinkPad@551v'
-if (!TOKEN_SECRET) {
-    throw new Error('[ERROR] TOKEN_SECRET no está definido en las variables de entorno. Agrégalo en Render > Environment.');
-}
+// TOKEN_SECRET viene de process.env — seteado dinámicamente en electron/main.cjs
+// basado en hardware del equipo. En desarrollo usa el valor del .env.
+export const TOKEN_SECRET = process.env.TOKEN_SECRET || 'meqanox-dev-fallback-secret-2025';
