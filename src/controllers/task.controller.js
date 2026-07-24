@@ -130,10 +130,9 @@ export const searchTasksByCarPlate = async (req, res) => {
     if (!carPlate) return res.status(400).json({ message: 'Debe proporcionar una patente válida' });
 
     const tasks = await prisma.task.findMany({
-      where:   { carPlate: carPlate.trim().toUpperCase() },
+      where:   { carPlate: { contains: carPlate.trim().toUpperCase() } },
       include: taskInclude,
     });
-    if (tasks.length === 0) return res.status(404).json({ message: 'No se encontraron tareas con esa patente' });
     res.json(tasks.map(decryptTask));
   } catch (error) {
     res.status(500).json({ message: 'Error interno del servidor' });
@@ -154,7 +153,6 @@ export const searchTasksByClientName = async (req, res) => {
       },
       include: taskInclude,
     });
-    if (tasks.length === 0) return res.status(404).json({ message: 'No se encontraron tareas para el cliente especificado.' });
     res.json(tasks.map(decryptTask));
   } catch (error) {
     res.status(500).json({ message: 'Error interno del servidor' });
@@ -170,7 +168,6 @@ export const searchTasksByPhone = async (req, res) => {
       where:   { clientPhone: { contains: phone.trim() } },
       include: taskInclude,
     });
-    if (tasks.length === 0) return res.status(404).json({ message: 'No se encontraron tareas para ese teléfono.' });
     res.json(tasks.map(decryptTask));
   } catch (error) {
     res.status(500).json({ message: 'Error interno del servidor' });
@@ -189,7 +186,6 @@ export const searchTasksByOrderNumber = async (req, res) => {
       where:   { orderNumber: num },
       include: taskInclude,
     });
-    if (tasks.length === 0) return res.status(404).json({ message: 'No se encontró ninguna orden con ese número.' });
     res.json(tasks.map(decryptTask));
   } catch (error) {
     res.status(500).json({ message: 'Error interno del servidor' });

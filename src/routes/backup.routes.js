@@ -244,3 +244,15 @@ router.post('/config/retention', authRequired, superadminRequired, async (req, r
     res.status(500).json({ message: 'Error al guardar: ' + error.message });
   }
 });
+
+
+// ── GET /api/config/taller — leer nombre del taller ──────────────────────────
+router.get('/config/taller', async (req, res) => {
+  try {
+    const row = await prisma.$queryRaw`SELECT value FROM "Config" WHERE key = 'tallerNombre'`;
+    const nombre = row?.[0]?.value || 'MeQanoX';
+    res.json({ tallerNombre: nombre });
+  } catch {
+    res.json({ tallerNombre: 'MeQanoX' });
+  }
+});

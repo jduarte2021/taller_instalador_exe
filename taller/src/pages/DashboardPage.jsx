@@ -127,11 +127,15 @@ export default function DashboardPage() {
   const [showIngresos, setShowIngresos] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [showNotif, setShowNotif] = useState(false);
+  const [tallerNombre, setTallerNombre] = useState("");
   const TASKS_PER_PAGE = 6;
 
   const isAdmin = user?.cargo?.toLowerCase() === "superadmin" || user?.cargo === "Administrador";
 
   useEffect(() => { getTasks(); }, []);
+  useEffect(() => {
+    axios.get("/config/taller").then(r => setTallerNombre(r.data.tallerNombre || "")).catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (!tasks.length) return;
@@ -235,6 +239,9 @@ export default function DashboardPage() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-3xl font-black tracking-tight" style={{ color: t.text }}>Panel de Control</h1>
+            {tallerNombre && (
+              <p className="text-sm font-semibold mt-1" style={{ color: t.textMuted }}>{tallerNombre}</p>
+            )}
             <p className="text-sm mt-1" style={{ color: t.textMuted }}>{new Date().toLocaleDateString("es-CL", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</p>
           </div>
           <div className="flex items-center gap-3">

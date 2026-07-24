@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
@@ -6,13 +6,19 @@ import { getAvatarUrl } from "../schemas/api/config";
 import meqanoxLogo from "../assets/images/meqanox-logo-sidebar.png";
 import meqanoxLogoLight from "../assets/images/meqanox-logo-sidebar-light.png";
 import Swal from "sweetalert2";
+import axios from "../api/axios";
 
 const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [tallerNombre, setTallerNombre] = useState("");
   const { logout, user } = useAuth();
   const { theme: t, themeName, setThemeName, largeFonts, toggleLargeFonts, THEMES } = useTheme();
   const navigate  = useNavigate();
   const location  = useLocation();
+
+  useEffect(() => {
+    axios.get("/config/taller").then(res => setTallerNombre(res.data.tallerNombre || "")).catch(() => {});
+  }, []);
 
   const isSuperAdmin = user?.cargo?.toLowerCase() === "superadmin";
   const isAdmin      = isSuperAdmin || user?.cargo === "Administrador";
@@ -59,11 +65,19 @@ const Sidebar = () => {
       <div className="flex items-center justify-between px-3 py-3"
         style={{ borderBottom: `1px solid ${t.sidebarBorder}` }}>
         {!isCollapsed && (
-          <img
-            src={themeName === "light" ? meqanoxLogoLight : meqanoxLogo}
-            alt="MeQanoX"
-            style={{ width: "180px", height: "80px", objectFit: "contain" }}
-          />
+          <div className="flex flex-col">
+            <img
+              src={themeName === "light" ? meqanoxLogoLight : meqanoxLogo}
+              alt="MeQanoX"
+              style={{ width: "180px", height: "80px", objectFit: "contain" }}
+            />
+            {tallerNombre && (
+              <span className="text-xs font-semibold truncate max-w-[160px] mt-1"
+                style={{ color: t.textMuted, letterSpacing: "0.5px" }}>
+                {tallerNombre}
+              </span>
+            )}
+          </div>
         )}
         <button onClick={() => setIsCollapsed(!isCollapsed)}
           className="p-1.5 rounded-lg transition-all ml-auto"
