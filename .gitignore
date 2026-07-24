@@ -3,3 +3,4 @@ node_modules/
 src/uploads/*
 !src/uploads/.gitkeep
 .cache/
+*.zip

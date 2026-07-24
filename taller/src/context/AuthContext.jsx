@@ -153,6 +153,18 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const checkLogin = async () => {
             try {
+                // Primero verificar si la app necesita configuración inicial
+                const setupRes = await axios.get('/setup/status').catch(() => ({ data: { needsSetup: false } }));
+                if (setupRes.data?.needsSetup) {
+                    setIsAuthenticated(false);
+                    setLoading(false);
+                    // Redirigir al setup — usar window.location para HashRouter
+                    if (!window.location.hash.includes('/setup')) {
+                        window.location.hash = '#/setup';
+                    }
+                    return;
+                }
+
                 const res = await axios.get('/verify');
                 if (!res.data) { setIsAuthenticated(false); setLoading(false); return; }
                 const userData = {

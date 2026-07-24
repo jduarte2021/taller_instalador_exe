@@ -1,4 +1,3 @@
-import bcrypt from 'bcryptjs';
 import prisma from './db.js';
 
 // Crea las tablas si no existen (idempotente — seguro correr siempre)
@@ -69,32 +68,32 @@ export const initDatabase = async () => {
     )
   `);
 
+  // Tabla de configuración del taller (nombre, etc.)
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS "Config" (
+      "key"   TEXT NOT NULL PRIMARY KEY,
+      "value" TEXT NOT NULL DEFAULT ''
+    )
+  `);
+
   console.log('>>>>> Tablas verificadas (SQLite)');
 };
 
-// Crea el usuario administrador por defecto si la BD está vacía
-export const firstRun = async () => {
+// Verificar si la app necesita configuración inicial (sin usuarios)
+export const needsSetup = async () => {
   try {
     const count = await prisma.user.count();
-    if (count > 0) return;
+    return count === 0;
+  } catch {
+    return true;
+  }
+};
 
-    const hash = await bcrypt.hash('Admin123456', 10);
-    await prisma.user.create({
-      data: {
-        username:     'jduarte',
-        email:        'jduarte@meqanox.cl',
-        password:     hash,
-        nombres:      'Jimmy',
-        apellidos:    'Duarte',
-        cargo:        'superadmin',
-        profileImage: '',
-      }
-    });
-
-    console.log('✅ Primera ejecución: usuario administrador creado.');
-    console.log('   Email:      jduarte@meqanox.cl');
-    console.log('   Contraseña: Admin123456');
-  } catch (error) {
-    console.error('❌ Error en firstRun:', error.message);
+// firstRun ya no crea usuario — el asistente de configuración lo hace
+export const firstRun = async () => {
+  // Solo log informativo — la creación de usuario es responsabilidad del setup
+  const count = await prisma.user.count();
+  if (count === 0) {
+    console.log('[setup] Primera ejecución detectada — esperando configuración inicial');
   }
 };

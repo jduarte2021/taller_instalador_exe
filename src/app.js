@@ -12,6 +12,7 @@ import logRoutes     from "./routes/log.routes.js";
 import emailRoutes   from "./routes/email.routes.js";
 import pdfRoutes     from "./routes/pdf.routes.js";
 import backupRoutes  from "./routes/backup.routes.js";
+import setupRoutes   from "./routes/setup.routes.js";
 
 const app = express();
 const __dirname = path.resolve();
@@ -42,6 +43,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser());
 
 app.use("/api", authRoutes);
+app.use("/api", setupRoutes);
 app.use("/api", taskRoutes);
 app.use("/api", profileRoutes);
 app.use("/api", userRoutes);

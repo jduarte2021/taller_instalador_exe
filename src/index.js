@@ -15,7 +15,7 @@ const startServer = async () => {
     await migrateEncryption();  // Cifrar datos existentes en texto plano (idempotente)
     await purgeOldLogs();
 
-    app.listen(PORT, () => {
+    app.listen(PORT, '127.0.0.1', () => {
       console.log(`Server on port ${PORT}`);
     });
   } catch (error) {
